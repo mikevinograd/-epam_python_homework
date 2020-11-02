@@ -21,5 +21,3 @@ def find_maximum_and_minimum(file_name: str) -> Tuple[int, int]:
             elif max <= line:
                 max = line
     return (min, max)
-
-
