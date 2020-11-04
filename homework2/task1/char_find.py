@@ -28,8 +28,32 @@ def count_non_ascii_chars(file_path: str) -> int:
 def get_most_common_non_ascii_char(file_path: str) -> str:
     ...
 
+
+def multiple_replace(target_str, replace_values=[':', ';', ',', '.', '(', ')', '?']):
+    # получаем заменяемое: подставляемое из словаря в цикле
+    for i in replace_values:
+        # меняем все target_str на подставляемое
+        target_str = target_str.replace(i, '')
+    target_str = target_str.replace('  ', ' ')
+    return target_str
+
+
 print(repr('\u00bbJetzt und hier\u00ab'))
-# with open('data.txt', 'r', encoding='utf-8') as fi:
-#     print(fi.read())
-    # for i in range(10):
-    #     print(fi.readline())
+with open('data.txt', 'r') as fi:
+    # print(fi.readlines()[3])
+    # print(set(fi.read()))
+    text = []
+    text = multiple_replace(fi.read()).splitlines()
+    for numb, line in enumerate(text):
+        text[numb] = line.split(' ')
+    for numb, line in enumerate(text):
+        if len(line[-1]) >= 2 and line[-1][-1] == '-':
+            text[numb + 1][0] = line.pop(-1)[:-1] + text[numb + 1][0][1:]
+        for word_numb,word in enumerate(line):
+            # text[numb][word_numb] = repr(word)
+            print(b"{}".format(word).decode("utf-8"))
+    # for line in fi:
+    #     text.append(fi.readline())
+    # for i in text:
+    #     print(i)
+    # print(text, end='\n')
