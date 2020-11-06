@@ -21,5 +21,18 @@ assert val_1 is val_2
 from collections import Callable
 
 
-def cache(func: Callable) -> Callable:
-    ...
+def my_func(val, cache=dict()):
+    if val not in cache:
+        # compute val
+        res = 2 * val
+        print(f'{val} compute')
+        cache[val] = res
+    return cache[val]
+
+my_func(100)
+my_func(200)
+my_func(100)
+
+
+# def cache(func: Callable) -> Callable:
+#     ...
