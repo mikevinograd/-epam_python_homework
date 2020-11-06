@@ -9,70 +9,103 @@ Given a file containing text. Complete using only default collections:
 from typing import List
 
 
-def get_longest_diverse_words(file_path: str) -> List[str]:
-    ...
-
-
-def get_rarest_char(file_path: str) -> str:
-    ...
-
-
-def count_punctuation_chars(file_path: str) -> int:
-    ...
-
-
-def count_non_ascii_chars(file_path: str) -> int:
-    ...
-
-
-def get_most_common_non_ascii_char(file_path: str) -> str:
-    ...
-
-
 def multiple_replace(target_str, replace_values=[':', ';', ',', '.', '(', ')', '?']):
-    # получаем заменяемое: подставляемое из словаря в цикле
     for i in replace_values:
-        # меняем все target_str на подставляемое
         target_str = target_str.replace(i, '')
     target_str = target_str.replace('  ', ' ')
     return target_str
 
 
-import sys
-import codecs
+def text_filter(file_path: str, char_include: bool):
+    with open(file_path, 'r') as fi:
+        text = []
+        if char_include:
+            text = fi.read().encode().decode('unicode-escape').splitlines()
+        else:
+            text = multiple_replace(fi.read().encode().decode('unicode-escape')).splitlines()
+        for numb, line in enumerate(text):
+            text[numb] = line.split(' ')
+        max_numb = [0 for x in range(10)]
+        max_word = [0 for x in range(10)]
+        for numb, line in enumerate(text):
+            if len(line[-1]) >= 2 and line[-1][-1] == '-':
+                text[numb + 1][0] = line.pop(-1)[:-1] + text[numb + 1][0][1:]
+        return text
 
-f = codecs.open("data.txt", "r", "utf-8")
-text_in_unicode = f.read()
-f.close()
 
-stdout_encoding = sys.stdout.encoding or sys.getfilesystemencoding()
+def get_longest_diverse_words(file_path: str) -> List[str]:
+    text = text_filter(file_path, 0)
+    max_numb = [0 for x in range(10)]
+    max_word = [0 for x in range(10)]
+    for line in text:
+        for word in line:
+            for top10_num, top10 in enumerate(max_numb):
+                if word not in max_word and top10 < len(set(word)):
+                    max_numb[top10_num] = len(set(word))
+                    max_word[top10_num] = word
+    return max_word
 
-# print(text_in_unicode.encode(stdout_encoding))
 
-with open('data.txt', encoding='ascii') as f:
-    for line in f:
-        print(line)
+def get_rarest_char(file_path: str) -> str:
+    text = text_filter(file_path, 1)
+    dict = {}
+    rar_symb_cnt = 0
+    for line in text:
+        for word in line:
+            for char in word:
+                if char in dict:
+                    dict[char] += 1
+                else:
+                    dict[char] = 1
+    for key in dict:
+        if rar_symb_cnt < dict[key]:
+            rar_symb_cnt = dict[key]
+            rar_symb = key
+    return key
 
-with open('lol.txt', 'w', encoding='utf-8') as file:
-    file.write(text_in_unicode)
 
-# print(repr('\u00bbJetzt und hier\u00ab'))
-# with open('data.txt', 'r') as fi:
-#     for line in fi.readlines():
-#         print(line.decode('string_escape'))
-# print(set(fi.read()))
-# text = []
-# text = multiple_replace(fi.read()).splitlines()
-# for numb, line in enumerate(text):
-#     text[numb] = line.split(' ')
-# for numb, line in enumerate(text):
-#     if len(line[-1]) >= 2 and line[-1][-1] == '-':
-#         text[numb + 1][0] = line.pop(-1)[:-1] + text[numb + 1][0][1:]
-#     for word_numb,word in enumerate(line):
-#         text[numb][word_numb] = repr(word)
-# print(b"{}".format(word).decode("utf-8"))
-# for line in fi:
-#     text.append(fi.readline())
-# for i in text:
-#     print(i)
-# print(text, end='\n')
+def count_punctuation_chars(file_path: str) -> int:
+    text = text_filter(file_path, 1)
+    cnt = 0
+    for line in text:
+        for word in line:
+            for char in word:
+                if char in ("""!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~"""):
+                    cnt += 1
+    return cnt
+
+
+def count_non_ascii_chars(file_path: str) -> int:
+    ascii_string = """!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"""
+    text = text_filter(file_path, 1)
+    cnt = 0
+    for line in text:
+        for word in line:
+            for char in word:
+                if char not in ascii_string:
+                    cnt += 1
+    return cnt
+
+
+def get_most_common_non_ascii_char(file_path: str) -> str:
+    ascii_string = """!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"""
+    cnt = 0
+    dict = {}
+    comm_symb_cnt = 0
+    text = text_filter(file_path, 1)
+    for line in text:
+        for word in line:
+            for char in word:
+                if char not in ascii_string:
+                    if char in dict:
+                        dict[char] += 1
+                    else:
+                        dict[char] = 1
+    for key in dict:
+        if comm_symb_cnt < dict[key]:
+            comm_symb_cnt = dict[key]
+            comm_symb = key
+    return comm_symb, dict
+
+
+print(get_rarest_char('data.txt'))
