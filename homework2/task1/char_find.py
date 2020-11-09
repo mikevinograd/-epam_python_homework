@@ -89,7 +89,6 @@ def count_non_ascii_chars(file_path: str) -> int:
 
 def get_most_common_non_ascii_char(file_path: str) -> str:
     ascii_string = """!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"""
-    cnt = 0
     dict = {}
     comm_symb_cnt = 0
     text = text_filter(file_path, 1)
@@ -105,7 +104,7 @@ def get_most_common_non_ascii_char(file_path: str) -> str:
         if comm_symb_cnt < dict[key]:
             comm_symb_cnt = dict[key]
             comm_symb = key
-    return comm_symb, dict
+    return comm_symb
 
 
-print(get_rarest_char('data.txt'))
+print(count_punctuation_chars('data.txt'))
