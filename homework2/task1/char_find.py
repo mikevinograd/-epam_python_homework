@@ -9,26 +9,28 @@ Given a file containing text. Complete using only default collections:
 from typing import List
 
 
-def multiple_replace(target_str, replace_values=[':', ';', ',', '.', '(', ')', '?']):
+def multiple_replace(target_str, replace_values=[":", ";", ",", ".", "(", ")", "?"]):
     for i in replace_values:
-        target_str = target_str.replace(i, '')
-    target_str = target_str.replace('  ', ' ')
+        target_str = target_str.replace(i, "")
+    target_str = target_str.replace("  ", " ")
     return target_str
 
 
 def text_filter(file_path: str, char_include: bool):
-    with open(file_path, 'r') as fi:
+    with open(file_path, "r") as fi:
         text = []
         if char_include:
-            text = fi.read().encode().decode('unicode-escape').splitlines()
+            text = fi.read().encode().decode("unicode-escape").splitlines()
         else:
-            text = multiple_replace(fi.read().encode().decode('unicode-escape')).splitlines()
+            text = multiple_replace(
+                fi.read().encode().decode("unicode-escape")
+            ).splitlines()
         for numb, line in enumerate(text):
-            text[numb] = line.split(' ')
+            text[numb] = line.split(" ")
         max_numb = [0 for x in range(10)]
         max_word = [0 for x in range(10)]
         for numb, line in enumerate(text):
-            if len(line[-1]) >= 2 and line[-1][-1] == '-':
+            if len(line[-1]) >= 2 and line[-1][-1] == "-":
                 text[numb + 1][0] = line.pop(-1)[:-1] + text[numb + 1][0][1:]
         return text
 
@@ -105,6 +107,3 @@ def get_most_common_non_ascii_char(file_path: str) -> str:
             comm_symb_cnt = dict[key]
             comm_symb = key
     return comm_symb
-
-
-print(count_punctuation_chars('data.txt'))
