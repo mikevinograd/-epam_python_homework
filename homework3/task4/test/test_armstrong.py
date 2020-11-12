@@ -3,7 +3,7 @@ from task4.armstrong import is_armstrong
 
 
 @pytest.mark.parametrize(
-    ["file", "expected_result"],
+    ["val", "expected_result"],
     [
         (153, True),
         (10, False),
@@ -11,6 +11,6 @@ from task4.armstrong import is_armstrong
         (548834, True),
     ],
 )
-def test_is_armstrong(file, expected_result: list):
-    actual_result = is_armstrong(file)
+def test_is_armstrong(val, expected_result):
+    actual_result = is_armstrong(val)
     assert actual_result == expected_result

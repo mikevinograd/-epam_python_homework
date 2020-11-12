@@ -1,27 +1,19 @@
-from datetime import datetime
-
-
 def cache(time):
     def save(f):
-        d = {}
-        d["time"] = time
+        tmp = dict()
+        tmp["time"] = time
 
         def wrap(*args, **kwargs):
-            if d["time"] == time:
+            if tmp["time"] == time:
                 result = f(*args, **kwargs)
-                d["answ"] = result
-            if d["time"] != 0:
-                d["time"] -= 1
-                print(d["answ"])
+                tmp["answ"] = result
+            if tmp["time"] != 0:
+                tmp["time"] -= 1
+                print(tmp["answ"])
             else:
-                d["time"] = time
-            return d["answ"]
+                tmp["time"] = time
+            return tmp["answ"]
 
         return wrap
 
     return save
-
-
-@cache(time=3)
-def f():
-    return input("? ")

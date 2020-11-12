@@ -24,25 +24,13 @@ def slow_calculate(value):
     """Some weird voodoo magic calculations"""
     time.sleep(random.randint(1, 3))
     data = hashlib.md5(str(value).encode()).digest()
-    return sum(struct.unpack('<' + 'B' * len(data), data))
+    return sum(struct.unpack("<" + "B" * len(data), data))
 
 
-def timeit(func):
-    def timed(*args, **kw):
-        ts = time.time()
-        result = func(*args, **kw)
-        te = time.time()
-        print("Compilation time is: ", te - ts)
-        return result
-
-    return timed
-
-@timeit
 def call_func(arr, func):
     p = Pool(30)
     return sum(p.map(func, arr))
 
 
 if __name__ == "__main__":
-    call_func(list(range(0, 501)), slow_calculate)
-
+    print(call_func(list(range(0, 501)), slow_calculate))
