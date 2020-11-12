@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-def printer(time):
+def cache(time):
     def save(f):
         d = {}
         d["time"] = time
@@ -22,6 +22,6 @@ def printer(time):
     return save
 
 
-@printer(time=3)
+@cache(time=3)
 def f():
     return input("? ")
