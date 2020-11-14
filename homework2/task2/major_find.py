@@ -21,19 +21,11 @@ from typing import List, Tuple
 
 
 def major_and_minor_elem(inp: List) -> Tuple[int, int]:
-    dict = {}
+    cnt_elements = {}
     for i in inp:
-        if i in dict:
-            dict[i] += 1
+        if i in cnt_elements:
+            cnt_elements[i] += 1
         else:
-            dict[i] = 1
-    minor_value, major_value = dict[inp[0]], dict[inp[0]]
-    minor, major = inp[0], inp[0]
-    for key in dict:
-        if minor_value > dict[key]:
-            minor_value = dict[key]
-            minor = key
-        elif major_value < dict[key]:
-            major_value = dict[key]
-            major = key
-    return (major, minor)
+            cnt_elements[i] = 1
+    sort_cnt_elements = sorted(cnt_elements.items(), key=lambda item: item[1])
+    return (sort_cnt_elements[-1][0], sort_cnt_elements[0][0])

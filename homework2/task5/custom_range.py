@@ -22,8 +22,15 @@ def custom_range(iterable_values, stop: str, start=None, step=1):
     val_list = list(iterable_values)
     if start is None:
         return list(iterable_values[0 : val_list.index(stop) : step])
+    elif step < 0:
+        return list(
+            iterable_values[val_list.index(start): val_list.index(stop): step]
+        )
     else:
         start, stop = stop, start
         return list(
             iterable_values[val_list.index(start) : val_list.index(stop) : step]
         )
+
+args = ['g']
+print(custom_range(string.ascii_lowercase, "g", "p", -2))
