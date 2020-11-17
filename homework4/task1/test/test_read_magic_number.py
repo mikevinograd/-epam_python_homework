@@ -24,7 +24,6 @@ def file_gen(file_pass, val):
     ],
 )
 def test_read_magic_number_true(file_pass, val, file_gen):
-    # print(file_pass, val)
     actual_result = read_magic_number(file_pass)
     os.remove(file_pass)
     assert actual_result is True
@@ -39,7 +38,6 @@ def test_read_magic_number_true(file_pass, val, file_gen):
     ],
 )
 def test_read_magic_number_false(file_pass, val, file_gen):
-    # print(file_pass, val)
     actual_result = read_magic_number(file_pass)
     os.remove(file_pass)
     assert actual_result is False

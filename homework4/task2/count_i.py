@@ -26,7 +26,6 @@ def count_dots_on_i(url: str) -> int:
         html = response.read().decode('utf-8')
         i = 0
         for char in html:
-            # print(type(char))
             if char == 'i':
                 i += 1
         return html.count("i")

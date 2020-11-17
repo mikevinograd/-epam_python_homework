@@ -19,10 +19,6 @@ import sys
 
 def my_precious_logger(text: str):
     if text[:5] == "error":
-        # print(text, text[:5])
         return sys.stderr.write(text)
-        # return sys.stderr, text
     else:
         return sys.stdout.write(text)
-
-my_precious_logger('0')
