@@ -23,22 +23,19 @@ You will learn:
 import os
 
 
-
 def read_magic_number(path: str) -> bool:
     if os.path.isfile(path) is False:
         raise FileNotFoundError
     try:
         with open(path, "r") as fi:
-            first_line = fi.readline()
-            if first_line[-1:] == '\n':
-                return first_line[:-1].isdigit() and float(first_line) >= 1 and float(first_line) < 3
-            else:
-                return first_line.isdigit() and float(first_line) >= 1 and float(first_line) < 3
+            first_line = float(fi.readline().strip())
+            return 1 <= float(first_line) < 3
     except:
         raise ValueError
 
-a = b"C:\Users\Yan\Desktop\python\data.txt"
-print(read_magic_number(a))
-print(os.path.isfile("test\data.txt"))
+
+# a = r"C:\Users\Yan\Desktop\python\data.txt"
+# print(read_magic_number(a))
+# print(os.path.isfile("test\data.txt"))
 # open(os.path.join(os.pardir, 'task1\data1.txt'), "w")
 # open(os.path.join(os.pardir, 'file_pass', "w"))
