@@ -1,0 +1,9 @@
+- Install Python 3.8 (https://www.python.org/downloads/)
+- Install pytest `pip install pytest`
+- Clone the repository <path your repository>
+- Checkout branch <your branch>
+- Open terminal by pressing win + R on Windows
+- Print cd and the path to directory, where the file contains
+- Print python file_name -v
+- Ex: python fizzbuzz.py -v
+- Check tests!

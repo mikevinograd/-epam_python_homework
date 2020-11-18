@@ -14,11 +14,12 @@ You will learn:
  - how to write complex mocks
  - how to raise an exception form mocks
  - do a simple network requests
->>> count_dots_on_i("https://example.com/")
+ count_dots_on_i("https://example.com/")
 59
 * https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen
 """
 import urllib.request
+
 
 def count_dots_on_i(url: str) -> int:
     try:
@@ -26,9 +27,8 @@ def count_dots_on_i(url: str) -> int:
         html = response.read()
         i = 0
         for char in html:
-            if char == 'i':
+            if char == "i":
                 i += 1
         return i
     except:
         raise ValueError("Unreachable {url}")
-print(count_dots_on_i('https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen'))

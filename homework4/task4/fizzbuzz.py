@@ -3,15 +3,6 @@ Write a function that takes a number N as an input and returns N FizzBuzz number
 Write a doctest for that function.
 Write a detailed instruction how to run doctests**.
 That how first steps for the instruction may look like:
-- Install Python 3.8 (https://www.python.org/downloads/)
-- Install pytest `pip install pytest`
-- Clone the repository <path your repository>
-- Checkout branch <your branch>
-- Open terminal by pressing win + R on Windows
-- Print cd and the path to directory, where the file contains
-- Print python file_name -v
-- Ex: python fizzbuzz.py -v
-- Check tests!
 Definition of done:
  - function is created
  - function is properly formatted
@@ -33,7 +24,39 @@ Traceback (most recent call last):
         ...
 TypeError: 'float' object cannot be interpreted as an integer
 >>> fizzbuzz(31)
-['1', '2', 'Fizz', '4', 'Buzz', 'Fizz', '7', '8', 'Fizz', 'Buzz', '11', 'Fizz', '13', '14', 'Fizz Buzz', '16', '17', 'Fizz', '19', 'Buzz', 'Fizz', '22', '23', 'Fizz', 'Buzz', '26', 'Fizz', '28', '29', 'Fizz Buzz', '31']
+[
+    "1",
+    "2",
+    "Fizz",
+    "4",
+    "Buzz",
+    "Fizz",
+    "7",
+    "8",
+    "Fizz",
+    "Buzz",
+    "11",
+    "Fizz",
+    "13",
+    "14",
+    "Fizz Buzz",
+    "16",
+    "17",
+    "Fizz",
+    "19",
+    "Buzz",
+    "Fizz",
+    "22",
+    "23",
+    "Fizz",
+    "Buzz",
+    "26",
+    "Fizz",
+    "28",
+    "29",
+    "Fizz Buzz",
+    "31",
+]
 """
 from typing import List
 
@@ -56,5 +79,3 @@ if __name__ == "__main__":
     import doctest
 
     doctest.testmod()
-
-print(fizzbuzz(-15))
