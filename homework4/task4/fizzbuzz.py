@@ -23,56 +23,24 @@ You will learn:
 Traceback (most recent call last):
         ...
 TypeError: 'float' object cannot be interpreted as an integer
->>> fizzbuzz(31)
-[
-    "1",
-    "2",
-    "Fizz",
-    "4",
-    "Buzz",
-    "Fizz",
-    "7",
-    "8",
-    "Fizz",
-    "Buzz",
-    "11",
-    "Fizz",
-    "13",
-    "14",
-    "Fizz Buzz",
-    "16",
-    "17",
-    "Fizz",
-    "19",
-    "Buzz",
-    "Fizz",
-    "22",
-    "23",
-    "Fizz",
-    "Buzz",
-    "26",
-    "Fizz",
-    "28",
-    "29",
-    "Fizz Buzz",
-    "31",
-]
+>>> fizzbuzz(15)
+['1', '2', 'Fizz', '4', 'Buzz', 'Fizz', '7', '8', 'Fizz', 'Buzz', '11', 'Fizz', '13', '14', 'Fizz Buzz']
 """
 from typing import List
 
 
 def fizzbuzz(n: int) -> List[str]:
-    Fizz_Buzz = []
+    fizz_buzz = []
     for i in range(1, n + 1):
         if i % 15 == 0:
-            Fizz_Buzz.append("Fizz Buzz")
+            fizz_buzz.append("Fizz Buzz")
         elif i % 3 == 0:
-            Fizz_Buzz.append("Fizz")
+            fizz_buzz.append("Fizz")
         elif i % 5 == 0:
-            Fizz_Buzz.append("Buzz")
+            fizz_buzz.append("Buzz")
         else:
-            Fizz_Buzz.append(str(i))
-    return Fizz_Buzz
+            fizz_buzz.append(str(i))
+    return fizz_buzz
 
 
 if __name__ == "__main__":

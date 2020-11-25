@@ -24,11 +24,9 @@ import os
 
 
 def read_magic_number(path: str) -> bool:
-    if os.path.isfile(path) is False:
-        raise FileNotFoundError
     try:
         with open(path, "r") as fi:
             first_line = float(fi.readline().strip())
             return 1 <= float(first_line) < 3
-    except:
+    except Exception:
         raise ValueError
