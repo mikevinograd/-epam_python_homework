@@ -2,7 +2,6 @@ import datetime
 
 
 class Homework:
-    """Created when new customer registers"""
 
     def __init__(self, text: str, deadline: int, created: datetime):
         self.text = text
@@ -16,7 +15,6 @@ class Homework:
 
 
 class Student:
-    """Created when new customer registers"""
 
     def __init__(self, last_name: str, first_name: str):
         self.last_name = last_name
@@ -27,7 +25,6 @@ class Student:
 
 
 class Teacher:
-    """Created when new customer registers"""
 
     def __init__(self, last_name: str, first_name: str):
         self.last_name = last_name
