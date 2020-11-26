@@ -45,7 +45,6 @@ from collections import defaultdict
 
 
 class Homework:
-    """Created when new customer registers"""
 
     def __init__(self, text: str, deadline: int, created: datetime):
         self.text = text
@@ -63,22 +62,28 @@ class Person:
         self.last_name = last_name
         self.first_name = first_name
 
+class DeadlineError(Exception):
+    """Exeption for timeout homework deadline"""
+
 class Student(Person):
 
-    """Created when new customer registers"""
 
     def do_homework(self, Homework):
-        return Homework if Homework.is_active() else print("You are late")
-
+        if Homework.is_active():
+            return Homework
+        raise DeadlineError("You are late")
 
 class Teacher(Person):
-    """Created when new customer registers"""
 
     def create_homework(self, text, deadline):
         return Homework(text, deadline, datetime.datetime.now())
+a = Student('yan', 'sychev')
+hw = Homework('text', -1, datetime.datetime.now())
 
 opp_teacher = Teacher('Daniil', 'Shadrin')
-print(opp_teacher.first_name)
+print(a.do_homework(hw))
+
+
 # if __name__ == '__main__':
 #     opp_teacher = Teacher('Daniil', 'Shadrin')
 #     advanced_python_teacher = Teacher('Aleksandr', 'Smetanin')
