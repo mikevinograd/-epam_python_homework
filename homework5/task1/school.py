@@ -20,8 +20,9 @@ class Student:
         self.last_name = last_name
         self.first_name = first_name
 
-    def do_homework(self, Homework):
-        return Homework if Homework.is_active() else print("You are late")
+    @staticmethod
+    def do_homework(homework: Homework):
+        return homework if homework.is_active() else print("You are late")
 
 
 class Teacher:
@@ -30,5 +31,6 @@ class Teacher:
         self.last_name = last_name
         self.first_name = first_name
 
-    def create_homework(self, text, deadline):
+    @staticmethod
+    def create_homework(text, deadline):
         return Homework(text, deadline, datetime.datetime.now())
