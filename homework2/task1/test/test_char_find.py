@@ -10,22 +10,22 @@ from task1.char_find import *
         (
             os.path.join("data.txt"),
             [
-                "Souveränitätsanprüche",
+                "unmißverständliche",
                 "Bevölkerungsabschub",
-                "symbolischakramentale",
                 "Kollektivschuldiger",
-                "politisch-strategischen",
                 "Selbstverständlich",
                 "Werkstättenlandschaft",
-                "résistance-Bewegungen",
+                "Selbstbezichtigungen",
                 "Vorausgeschickt",
                 "Außerordentliche",
+                "Machtbewußtsein",
+                "Bilderabgleichung",
             ],
         ),
     ],
 )
 def test_get_longest_diverse_words(file, expected_result: list):
-    actual_result = get_longest_diverse_words(file)
+    actual_result = get_longest_deverse_words(file)
     assert actual_result == expected_result
 
 
@@ -65,7 +65,7 @@ def test_get_rarest_char(file, expected_result: list):
 @pytest.mark.parametrize(
     ["file", "expected_result"],
     [
-        (os.path.join("data.txt"), 4336),
+        (os.path.join("data.txt"), 5248),
     ],
 )
 def test_count_punctuation_chars(file, expected_result: list):
@@ -77,7 +77,7 @@ def test_count_punctuation_chars(file, expected_result: list):
 @pytest.mark.parametrize(
     ["file", "expected_result"],
     [
-        (os.path.join("data.txt"), 2959),
+        (os.path.join("data.txt"), 2858),
     ],
 )
 def test_count_non_ascii_chars(file, expected_result: list):

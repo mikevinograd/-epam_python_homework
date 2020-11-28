@@ -37,7 +37,7 @@ def tokenize(file_handler):
         yield ("word", buffer)
 
 
-def get_longest_deverse_words1(file_path):
+def get_longest_deverse_words(file_path):
     with open(file_path, "r", encoding="unicode-escape") as fi:
         top10_longest_words = ["" for x in range(10)]
         for token in list(tokenize(fi)):
