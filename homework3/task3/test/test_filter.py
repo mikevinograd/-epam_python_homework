@@ -26,4 +26,4 @@ sample_data = [
     ],
 )
 def test_make_filter(kwargs, sample_data, expected):
-    assert make_filter(**kwargs).apply(sample_data) == expected
+    assert make_filter(**kwargs).apply(sample_data) == [expected]

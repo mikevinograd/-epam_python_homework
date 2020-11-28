@@ -8,6 +8,18 @@ def test_cahce():
     def f(smth):
         return smth
 
-    answ = f(23)
+    answer = f(23)
 
-    assert all([f(23) is answ for i in range(time_num)]) is True
+    assert all([f(23) is answer for i in range(time_num)]) is True
+
+
+def test_cache_diff_param():
+    @cache(3)
+    def f(a):
+        print('inside', a)
+        return a
+
+    assert f(1) == 1
+    assert f(1) == 1
+    assert f(2) == 2
+    assert f(2) == 2

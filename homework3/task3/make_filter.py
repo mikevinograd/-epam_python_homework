@@ -21,18 +21,19 @@ def make_filter(**keywords):
     filter_funcs = []
     for key, value in keywords.items():
         def keyword_filter_func(data, value=value, key=key):
-            return data[key] == value
+            return data.get(key) == value
+            # return data[key] == value
 
         filter_funcs.append(keyword_filter_func)
     return Filter(filter_funcs)
 
 
-sample_data = [
-    {
-        "name": "Bill",
-        "last_name": "Gilbert",
-        "occupation": "was here",
-        "type": "person",
-    },
-    {"is_dead": True, "kind": "parrot", "type": "bird", "name": "polly"},
-]
+# sample_data = [
+#     {
+#         "name": "Bill",
+#         "last_name": "Gilbert",
+#         "occupation": "was here",
+#         "type": "person",
+#     },
+#     {"is_dead": True, "kind": "parrot", "type": "bird", "name": "polly"},
+# ]
