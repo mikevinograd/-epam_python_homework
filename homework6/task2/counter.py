@@ -16,11 +16,13 @@ def instances_counter(cls):
         obj = super(cls, cls).__new__(cls)
         cls._created_instances += 1
         return obj
-
-    def get_created_instances(*args):
+    
+    @classmethod
+    def get_created_instances(cls):
         return cls._created_instances
 
-    def reset_instances_counter(*args):
+    @classmethod
+    def reset_instances_counter(cls):
         temp_created_instances = cls._created_instances
         cls._created_instances = 0
         return temp_created_instances
