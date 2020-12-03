@@ -105,12 +105,6 @@ class Teacher(Person):
         return Homework(text, deadline, datetime.datetime.now())
 
 
-a = Student('yan', 'sychev')
-hw = Homework('text', -1, datetime.datetime.now())
-
-opp_teacher = Teacher('Daniil', 'Shadrin')
-print(isinstance(hw, Homework))
-
 if __name__ == '__main__':
     opp_teacher = Teacher('Daniil', 'Shadrin')
     advanced_python_teacher = Teacher('Aleksandr', 'Smetanin')
@@ -137,6 +131,6 @@ if __name__ == '__main__':
 
     opp_teacher.check_homework(result_2)
     opp_teacher.check_homework(result_3)
-
+    print(opp_teacher.homework_done[oop_hw], oop_hw)
     print(Teacher.homework_done[oop_hw])
     Teacher.reset_results()
