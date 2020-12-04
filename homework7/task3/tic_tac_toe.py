@@ -19,7 +19,6 @@ from typing import List
 
 
 def tic_tac_toe_checker(board: List[List]) -> str:
-
     unfinished = False
     for i in range(3):
         print(board[::][i], board[i][::])
@@ -41,8 +40,3 @@ def tic_tac_toe_checker(board: List[List]) -> str:
     if unfinished:
         return "unfinished!"
     return "draw!"
-
-a =[["-", "o", "x"],
- ["-", "-", "x"],
- ["-", "o", "x"]]
-print(tic_tac_toe_checker(a))
