@@ -25,5 +25,3 @@ def backspace_compare(first: str, second: str):
                 edit_line.pop()
         return edit_line
     return str_editor(first) == str_editor(second)
-
-print(backspace_compare("a#c", "#b"))

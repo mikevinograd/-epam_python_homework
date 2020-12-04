@@ -19,35 +19,30 @@ from typing import List
 
 
 def tic_tac_toe_checker(board: List[List]) -> str:
-    def column_check(board):
-        for i in range(3):
-            if set(board[::][i]) == 1:
-                return board[0][i]
-            if "-" in board[::][i]:
-                return "unfinished!!"
 
-    def row_check(board):
-        for i in range(3):
-            if len(set(board[i][::])) == 1:
-                return board[i][0]
-            if "-" in board[i][::]:
-                return "unfinished!!"
+    unfinished = False
+    for i in range(3):
+        print(board[::][i], board[i][::])
+        if len(set([x[i] for x in board])) == 1 and "-" not in [x[i] for x in board]:
+            return f"{board[0][i]} wins!"
+        if len(set(board[i])) == 1 and "-" not in board[i]:
+            return f"{board[i][0]} wins!"
+        if "-" in board[::][i]:
+            unfinished = True
 
-    def left_diagonal_check(board):
-        left_diagonal = [board[i][i] for i in range(3)]
-        if "-" in left_diagonal:
-            return "unfinished!!"
-        elif len(set(left_diagonal)) == 1:
-            return left_diagonal[0]
+    left_diagonal = [board[i][i] for i in range(3)]
+    if len(set(left_diagonal)) == 1 and "-" not in left_diagonal:
+        return f"{left_diagonal[0]} wins!"
 
-    def right_diagonal_check(board):
-        right_diagonal = [board[2 - i][i] for i in range(2, -1, -1)]
-        if "-" in right_diagonal:
-            return "unfinished!!"
-        elif len(set(right_diagonal)) == 1:
-            return right_diagonal[0]
-    return row_check(board)
-a =[["-", "-", "o"],
- ["-", "o", "o"],
- ["x", "x", "x"]]
-print(tic_tac_toe_checker(a), a)
+    right_diagonal = [board[2 - i][i] for i in range(2, -1, -1)]
+    if len(set(right_diagonal)) == 1 and "-" not in right_diagonal:
+        return f"{right_diagonal[0]} wins!"
+
+    if unfinished:
+        return "unfinished!"
+    return "draw!"
+
+a =[["-", "o", "x"],
+ ["-", "-", "x"],
+ ["-", "o", "x"]]
+print(tic_tac_toe_checker(a))

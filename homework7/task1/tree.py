@@ -8,24 +8,6 @@ Tree can only contains basic structures like:
 from typing import Any
 from collections import defaultdict
 
-# Example tree:
-example_tree = {
-    "first": ["RED", "BLUE"],
-    "second": {
-        "simple_key": ["simple", "list", "of", "RED", "valued"],
-    },
-    "third": {
-        "abc": "BLUE",
-        "jhl": "RED",
-        "complex_key": {
-            "key1": "value1",
-            "key2": "RED",
-            "key3": ["a", "lot", "of", "values", {"nested_key": "RED"}],
-        }
-     },
-    "fourth": "RED",
-}
-
 
 def find_occurrences(tree: dict, element: Any) -> int:
     answer = defaultdict(int)
@@ -39,11 +21,6 @@ def find_occurrences(tree: dict, element: Any) -> int:
         elif isinstance(struct, (list, tuple, set)):
             for elem in struct:
                 finder(elem, element)
+
     finder(tree, element)
     return answer["ctn"]
-
-
-if __name__ == '__main__':
-    print(find_occurrences(example_tree, {
-        "simple_key": ["simple", "list", "of", "RED", "valued"],
-    }))  # 6
