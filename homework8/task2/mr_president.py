@@ -17,6 +17,18 @@ calls completely. Use supplied example.sqlite file as database fixture file.
 """
 import sqlite3
 
+def connect(database_name):
+    def database_conn(func):
+        def wrapper(self, *args, **kwargs):
+            cursor = sqlite3.connect(database_name).cursor()
+            # self.cursor.execute(f'SELECT * from {self.table_name}')  # where name = "Yeltsin"
+            print("open")
+            func_result = func(*args, **kwargs)
+            cursor.close()
+            print("close")
+            return func_result
+        return wrapper
+    return database_conn
 
 class TableData:
     def __init__(self, database_name: str, table_name: str):
@@ -35,7 +47,6 @@ class TableData:
 
         return wrapper
 
-    @database_conn
     def __len__(self):
         self.cursor.execute(f'SELECT * from {self.table_name}')
         len_ctn = 0
@@ -49,6 +60,7 @@ class TableData:
     def __iter__(self):
         return self
 
+    @connect('example.sqlite')
     def __next__(self):
         row = self.table.fetchone()
         while row is not None:
@@ -66,7 +78,7 @@ class TableData:
 examp = TableData(database_name='example.sqlite', table_name='presidents')
 
 print(len(examp))
-# print(examp['name'])
+# print(examp['Yeltsin'])
 # print('Yeltsin' in examp)
 # for president in examp:
 #     print(list(president))
