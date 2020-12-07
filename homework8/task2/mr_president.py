@@ -19,7 +19,7 @@ import sqlite3
 
 def connect(database_name):
     def database_conn(func):
-        def wrapper(self, *args, **kwargs):
+        def wrapper(*args, **kwargs):
             cursor = sqlite3.connect(database_name).cursor()
             # self.cursor.execute(f'SELECT * from {self.table_name}')  # where name = "Yeltsin"
             print("open")
@@ -47,6 +47,7 @@ class TableData:
 
         return wrapper
 
+    @connect('example.sqlite')
     def __len__(self):
         self.cursor.execute(f'SELECT * from {self.table_name}')
         len_ctn = 0
@@ -60,7 +61,6 @@ class TableData:
     def __iter__(self):
         return self
 
-    @connect('example.sqlite')
     def __next__(self):
         row = self.table.fetchone()
         while row is not None:
