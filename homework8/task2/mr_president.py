@@ -17,71 +17,43 @@ calls completely. Use supplied example.sqlite file as database fixture file.
 """
 import sqlite3
 
-def connect(database_name):
-    def database_conn(func):
-        def wrapper(*args, **kwargs):
-            cursor = sqlite3.connect(database_name).cursor()
-            # self.cursor.execute(f'SELECT * from {self.table_name}')  # where name = "Yeltsin"
-            print("open")
-            func_result = func(*args, **kwargs)
-            cursor.close()
-            print("close")
-            return func_result
-        return wrapper
-    return database_conn
 
 class TableData:
     def __init__(self, database_name: str, table_name: str):
         self.database_name = database_name
         self.table_name = table_name
-        self.cursor = sqlite3.connect(self.database_name).cursor()
-        self.table = self.cursor.execute(f'SELECT * from {self.table_name}')
 
-    def database_conn(self, func):
-        def wrapper(*args, **kwargs):
-            self.cursor = sqlite3.connect(self.database_name).cursor()
-            # self.cursor.execute(f'SELECT * from {self.table_name}')  # where name = "Yeltsin"
-            func_result = func(*args, **kwargs)
-            self.cursor.close()
-            return func_result
+    @staticmethod
+    def database_conn(func):
+        def wrapper(self, *args, **kwargs):
+            conn = sqlite3.connect(self.database_name)
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            return func(self, cursor, *args, **kwargs)
 
         return wrapper
 
-    @connect('example.sqlite')
-    def __len__(self):
-        self.cursor.execute(f'SELECT * from {self.table_name}')
-        len_ctn = 0
-        row = self.cursor.fetchone()
-        while row is not None:
-            len_ctn += 1
-            row = self.cursor.fetchone()
-        # self.cursor.close()
-        return len_ctn
+    @database_conn.__func__
+    def __len__(self, cursor):
+        cursor.execute(f'SELECT COUNT(*) from {self.table_name}')
+        row = cursor.fetchone()[0]
+        return row
 
-    def __iter__(self):
-        return self
+    @database_conn.__func__
+    def __getitem__(self, cursor, key):
+        single_data_row = cursor.execute(f'SELECT * from {self.table_name} where name =?', (key,))
+        return tuple(single_data_row.fetchone())
 
-    def __next__(self):
-        row = self.table.fetchone()
-        while row is not None:
-            return row
-        raise StopIteration
+    @database_conn.__func__
+    def __contains__(self, cursor, value):
+        return value in cursor.execute(f'SELECT * from {self.table_name} where name = "{value}"').fetchone()
 
-    def __getitem__(self, key):
-        single_data_row = self.cursor.execute(f'SELECT * from {self.table_name} where name = "{key}"')
-        return single_data_row.fetchone()
-
-    def __contains__(self, value):
-        return value in self.cursor.execute(f'SELECT * from {self.table_name} where name = "{value}"').fetchone()
-
-
-examp = TableData(database_name='example.sqlite', table_name='presidents')
-
-print(len(examp))
-# print(examp['Yeltsin'])
-# print('Yeltsin' in examp)
-# for president in examp:
-#     print(list(president))
-# for president in examp:
-#     print(president)
-# print(examp.table.fetchone(), examp.table.fetchone(), examp.table.fetchone())
+    @database_conn.__func__
+    def __iter__(self, cursor):
+        cursor.execute(f'SELECT * from {self.table_name}')
+        while True:
+            row = cursor.fetchone()
+            if row is not None:
+                yield row
+            else:
+                break
