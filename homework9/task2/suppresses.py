@@ -14,7 +14,7 @@ class Supressor:
     def __enter__(self):
         pass
 
-    def __exit__(self):
+    def __exit__(self, type, value, traceback):
         try:
             yield
         except self.exeption:
@@ -30,4 +30,3 @@ def supressor(exeption):
             pass
     except exeption:
         pass
-    
