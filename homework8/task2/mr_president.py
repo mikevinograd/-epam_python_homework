@@ -23,33 +23,38 @@ class TableData:
         self.database_name = database_name
         self.table_name = table_name
 
-    @staticmethod
     def database_conn(func):
         def wrapper(self, *args, **kwargs):
             conn = sqlite3.connect(self.database_name)
             conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
-            return func(self, cursor, *args, **kwargs)
+            result = func(self, cursor, *args, **kwargs)
+            cursor.close()
+            conn.close()
+            return result
 
         return wrapper
 
-    @database_conn.__func__
+    @database_conn
     def __len__(self, cursor):
         cursor.execute(f'SELECT COUNT(*) from {self.table_name}')
         row = cursor.fetchone()[0]
         return row
 
-    @database_conn.__func__
+    @database_conn
     def __getitem__(self, cursor, key):
         single_data_row = cursor.execute(f'SELECT * from {self.table_name} where name =?', (key,))
         return tuple(single_data_row.fetchone())
 
-    @database_conn.__func__
+    @database_conn
     def __contains__(self, cursor, value):
         return value in cursor.execute(f'SELECT * from {self.table_name} where name = "{value}"').fetchone()
 
-    @database_conn.__func__
+    @database_conn
     def __iter__(self, cursor):
+        conn = sqlite3.connect(self.database_name)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
         cursor.execute(f'SELECT * from {self.table_name}')
         while True:
             row = cursor.fetchone()

@@ -19,6 +19,7 @@ class KeyValueStorage:
 
     def __init__(self, path: str):
         self.path = path
+        self.__filedata = self.reader()
 
     def reader(self):
         with open(self.path, "r") as fi:
@@ -30,9 +31,9 @@ class KeyValueStorage:
         return file_data
 
     def __getattr__(self, key):
-        return self.reader()[key]
+        return self.__filedata[key]
 
     def __getitem__(self, key):
         if not re.match(r"^\w[\w\d\-]+$", key):
             raise AttributeError("Invalid characters in attribute name")
-        return self.reader()[key]
+        return self.__filedata[key]

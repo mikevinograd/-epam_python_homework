@@ -6,7 +6,11 @@ from task2.mr_president import TableData
 
 @pytest.fixture
 def tmp_table():
-    temp_table = os.path.join(os.path.dirname(__file__), "temp_test_table.db")
+    path_to_file = os.path.join(os.path.dirname(__file__), "temp_test_table.db")
+    if os.path.exists(path_to_file):
+        os.remove(path_to_file)
+
+    temp_table = path_to_file
     con = sqlite3.connect(temp_table)
     cursor_table = con.cursor()
     cursor_table.execute("CREATE TABLE presidents(name text, id integer, country text)")
