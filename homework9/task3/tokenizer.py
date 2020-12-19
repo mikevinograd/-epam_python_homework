@@ -9,6 +9,7 @@ For dir with two files from hw1.py:
 6
 """
 import os
+from functools import partial
 from pathlib import Path
 from typing import Optional, Callable
 
@@ -30,10 +31,6 @@ def universal_file_counter(
     for file in os.listdir(dir_path):
         if file.endswith(f".{file_extension}"):
             with open(f"{dir_path}/{file}") as f:
-                for _ in map(tokenizer, f):
-                    ctn_lines += 1
+                for token in map(tokenizer, f):
+                    ctn_lines += len(token) - 1
     return ctn_lines
-
-
-
-print(universal_file_counter("C:/Users/Yan/Documents/GitHub/-epam_python_homework/homework9/task1", "txt", str.split))
