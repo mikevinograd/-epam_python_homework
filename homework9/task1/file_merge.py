@@ -20,7 +20,7 @@ def merge_sorted_files(file_list) -> Iterator:
         with open(file_list[1]) as fi2:
             tmp_file1 = fi1.readline().rstrip('\n')
             tmp_file2 = fi2.readline().rstrip('\n')
-            while tmp_file1 != "" and tmp_file2 != "":
+            while tmp_file1 is not "" and tmp_file2 is not "":
                 if int(tmp_file1) < int(tmp_file2):
                     yield int(tmp_file1)
                     tmp_file1 = fi1.readline().rstrip('\n')

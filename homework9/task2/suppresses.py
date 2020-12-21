@@ -24,9 +24,6 @@ class Supressor:
 @contextmanager
 def supressor(exeption):
     try:
-        try:
-            yield
-        finally:
-            pass
+        yield
     except exeption:
         pass

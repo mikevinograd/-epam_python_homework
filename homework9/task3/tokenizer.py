@@ -22,9 +22,7 @@ def universal_file_counter(
         for file in os.listdir(dir_path):
             if file.endswith(f".{file_extension}"):
                 with open(f"{dir_path}/{file}") as f:
-                    for i, _ in enumerate(f):
-                        pass
-                ctn_lines += i + 1
+                    ctn_lines += sum(1 for _ in f)
         return ctn_lines
 
     ctn_lines = 0
