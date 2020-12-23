@@ -22,21 +22,28 @@ assert ColorsEnum.RED == "RED"
 assert SizesEnum.XL == "XL"
 """
 
+
 class SimplifiedEnum(type):
+    def __new__(cls, name, bases, dct):
+        cls_instance = super().__new__(cls, name, bases, dct)
+        print(dct)
+        return cls_instance
 
     def __getattr__(self, key):
-        # for x, y in vars(self).items():
-        #
-        #     if not x.endswith("__"):
-        #         return x, y
+        for namespace_item, y in vars(self).items():
 
-        keys = [attr for attr in vars(self) if not callable(getattr(self, attr)) and not attr.endswith("__")]
-        return self.__dict__.get()
+            if not namespace_item.endswith("__"):
+                return key if key in y else ValueError
+
+        keys = [attr for attr in vars(self).items(self) if not callable(getattr(self, attr)) and not attr.endswith("__")]
+        return keys
+
 
 class ColorsEnum(metaclass=SimplifiedEnum):
     __keys = ("RED", "BLUE", "ORANGE", "BLACK")
 
-print(ColorsEnum.RED)
+
+print(ColorsEnum.BLUE)
 # print(ColorsEnum.__dir__(ColorsEnum))
 #
 # class Example(object):
