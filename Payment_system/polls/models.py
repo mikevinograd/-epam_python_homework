@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import F
+import decimal
 
 
 class Client(models.Model):
@@ -11,13 +13,13 @@ class Client(models.Model):
     last_name = models.CharField(max_length=200)
 
     def add_wallet(self, wallet_name):
-        return Wallet(name=wallet_name, client=self.id)
+        Wallet(name=wallet_name, client=self).save()
 
-    # def credit(self, wallet_name, replenishment_amount):
-    #     return Wallet(name=wallet_name, client=self.id)
+    def credit(self, wallet_name, replenishment_amount: str):
+        Wallet.objects.filter(name=wallet_name).update(money=F("money") + decimal.Decimal(replenishment_amount))
 
     def __str__(self) -> str:
-        return f"self.last_name, self.first_name"
+        return f"{self.last_name}, {self.first_name}"
 
 
 class Wallet(models.Model):
@@ -28,7 +30,10 @@ class Wallet(models.Model):
     money = models.DecimalField(default=0.00, max_digits=30, decimal_places=2)
 
     def __str__(self) -> str:
-        return f"self.name, self.money"
+        return f"{self.name}, {self.money}"
+
+    def credit_wallet(self, wallet_name, replenishment_amount):
+        return Wallet(name=wallet_name, client=self.id, money=(replenishment_amount + wallet_name.money))
 
 
 class Loglist(models.Model):
