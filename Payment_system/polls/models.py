@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.db.models import F
 import decimal
 
@@ -18,6 +18,7 @@ class Client(models.Model):
     def credit(self, wallet_name: str, replenishment_amount: str):
         Wallet.objects.filter(name=wallet_name).update(money=F("money") + decimal.Decimal(replenishment_amount))
 
+    @transaction.atomic
     def transfer_wall(self, cash_out_wallet: str, cash_in_wallet: str, replenishment_amount: str):
         if Wallet.objects.filter(name=cash_out_wallet)[0].money - decimal.Decimal(replenishment_amount) >= 0:
             Wallet.objects.filter(name=cash_out_wallet).update(money=F("money") - decimal.Decimal(replenishment_amount))
