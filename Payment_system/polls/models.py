@@ -12,11 +12,18 @@ class Client(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
 
-    def add_wallet(self, wallet_name):
+    def add_wallet(self, wallet_name: str):
         Wallet(name=wallet_name, client=self).save()
 
-    def credit(self, wallet_name, replenishment_amount: str):
+    def credit(self, wallet_name: str, replenishment_amount: str):
         Wallet.objects.filter(name=wallet_name).update(money=F("money") + decimal.Decimal(replenishment_amount))
+
+    def transfer_wall(self, cash_out_wallet: str, cash_in_wallet: str, replenishment_amount: str):
+        if Wallet.objects.filter(name=cash_out_wallet)[0].money - decimal.Decimal(replenishment_amount) >= 0:
+            Wallet.objects.filter(name=cash_out_wallet).update(money=F("money") - decimal.Decimal(replenishment_amount))
+            Wallet.objects.filter(name=cash_in_wallet).update(money=F("money") + decimal.Decimal(replenishment_amount))
+        else:
+            print("Not enough money!")
 
     def __str__(self) -> str:
         return f"{self.last_name}, {self.first_name}"
@@ -31,9 +38,6 @@ class Wallet(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name}, {self.money}"
-
-    def credit_wallet(self, wallet_name, replenishment_amount):
-        return Wallet(name=wallet_name, client=self.id, money=(replenishment_amount + wallet_name.money))
 
 
 class Loglist(models.Model):
