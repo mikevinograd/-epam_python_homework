@@ -1,14 +1,14 @@
 from rest_framework import serializers
-from polls.models import Client, Wallet
-
-
-class ClientDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Client
-        fields = '__all__'
+from polls.models import Wallet
 
 
 class WalletDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wallet
-        fields = ('name', 'client')
+        fields = ("name", )
+
+
+class WalletSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wallet
+        fields = "__all__"

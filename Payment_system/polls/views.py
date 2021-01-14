@@ -1,11 +1,10 @@
 from django.http import HttpResponse
 from rest_framework import generics
 from rest_framework.views import APIView
-from polls.models import Client, Wallet
-from polls.serializers import ClientDetailSerializer, WalletDetailSerializer
+from polls.models import Wallet
+from polls.serializers import WalletDetailSerializer, WalletSerializer
 from rest_framework.response import Response
 from django.core.exceptions import ValidationError
-
 
 
 def index(request):
@@ -15,15 +14,16 @@ def index(request):
 # Create your views here.
 
 
-class ClientCreateView(generics.CreateAPIView):
-    serializer_class = ClientDetailSerializer
-
-
 class WalletCreateView(generics.CreateAPIView):
     serializer_class = WalletDetailSerializer
 
 
-class ClientListView(APIView):
+class WalletView(generics.RetrieveAPIView):
+    serializer_class = WalletSerializer
+    queryset = Wallet.objects.all()
+
+
+class WalletTransfer(APIView):
 
     def post(self, request, format=None):
 
@@ -39,9 +39,10 @@ class ClientListView(APIView):
             raise ValidationError("ERROR: replenishment amount must be positive")
 
         if Wallet.objects.filter(name=cash_in_wallet).exists() and Wallet.objects.filter(name=cash_out_wallet).exists():
-            client = Wallet.objects.filter(name=cash_out_wallet)[0].client
+            # client = Wallet.objects.filter(name=cash_out_wallet)[0].client
 
-            transfer = client.transfer_wall(cash_out_wallet, cash_in_wallet, replenishment_amount)
+            transfer = Wallet.objects.filter(name=cash_out_wallet).transfer_wall(cash_out_wallet, cash_in_wallet,
+                                                                                 replenishment_amount)
 
             return Response(transfer)
         raise ValidationError("ERROR: wallet with this name doesn't exist")
@@ -50,12 +51,12 @@ class ClientListView(APIView):
         """
         Return a list of all users.
         """
-        usernames = [user.first_name for user in Client.objects.all()]
+        usernames = [wallet.name for wallet in Wallet.objects.all()]
         request_example = {"cash_out_wallet": "", "cash_in_wallet": "", "replenishment_amount": ""}
         return Response((usernames, request_example))
 
 
-class ClientСreditWallet(APIView):
+class WalletCredit(APIView):
 
     def post(self, request, format=None):
 
@@ -67,8 +68,8 @@ class ClientСreditWallet(APIView):
             raise ValidationError("ERROR: replenishment amount must be positive")
 
         if Wallet.objects.filter(name=wallet_name).exists():
-            client = Wallet.objects.filter(name=wallet_name)[0].client
-            credit = client.credit(wallet_name, replenishment_amount)
+            # client = Wallet.objects.filter(name=wallet_name)[0].client
+            credit = Wallet.objects.filter(name=wallet_name).credit(replenishment_amount)
             return Response(credit)
 
         raise ValidationError("ERROR: wallet with this name doesn't exist")

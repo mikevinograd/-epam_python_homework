@@ -4,8 +4,8 @@ from polls.views import *
 
 app_name = 'bank'
 urlpatterns = [
-    path('client/create/', ClientCreateView.as_view()),
-    path('wallet/create/', WalletCreateView.as_view()),
-    path('client/transfer/', ClientListView.as_view()),
-    path('client/credit/', ClientСreditWallet.as_view())
+    path('wallets', WalletCreateView.as_view()),
+    path('wallets/transfer/', WalletTransfer.as_view()),
+    path('wallets/credit/', WalletCredit.as_view()),
+    path('wallets/<int:pk>/', WalletView.as_view()),
 ]
