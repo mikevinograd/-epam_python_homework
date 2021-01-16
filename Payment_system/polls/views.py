@@ -1,14 +1,8 @@
-from django.http import HttpResponse
 from rest_framework import generics
 from rest_framework.views import APIView
 from polls.models import Wallet
 from polls.serializers import WalletDetailSerializer, WalletSerializer
 from rest_framework.response import Response
-from django.core.exceptions import ValidationError
-
-
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
 
 
 # Create your views here.
@@ -25,59 +19,57 @@ class WalletView(generics.RetrieveAPIView):
 
 class WalletTransfer(APIView):
 
-    def post(self, request, format=None):
+    def post(self, request, pk, format=None):
 
         data = request.data
-        cash_out_wallet = data["cash_out_wallet"]
-        cash_in_wallet = data["cash_in_wallet"]
 
-        if cash_out_wallet == cash_in_wallet:
-            raise ValidationError("ERROR: must put different wallets name")
+        wallet_to_send_name = data["wallet_to_send"]
+        money_to_send = data["money_to_send"]
 
-        replenishment_amount = data["replenishment_amount"]
-        if "-" in replenishment_amount:
-            raise ValidationError("ERROR: replenishment amount must be positive")
+        try:
+            transfer_result = Wallet.objects \
+                .filter(pk=pk) \
+                .first() \
+                .transfer(wallet_to_send_name, money_to_send)
+        except AssertionError as e:
+            return Response(f"Error: {e}")
+        except Exception as _:
+            return Response("Error: Selected wallet does not exist!")
 
-        if Wallet.objects.filter(name=cash_in_wallet).exists() and Wallet.objects.filter(name=cash_out_wallet).exists():
-            # client = Wallet.objects.filter(name=cash_out_wallet)[0].client
+        return Response(transfer_result)
 
-            transfer = Wallet.objects.filter(name=cash_out_wallet).transfer_wall(cash_out_wallet, cash_in_wallet,
-                                                                                 replenishment_amount)
-
-            return Response(transfer)
-        raise ValidationError("ERROR: wallet with this name doesn't exist")
-
-    def get(self, request, format=None):
+    def get(self, request, pk, format=None):
         """
         Return a list of all users.
         """
-        usernames = [wallet.name for wallet in Wallet.objects.all()]
-        request_example = {"cash_out_wallet": "", "cash_in_wallet": "", "replenishment_amount": ""}
+        usernames = [(wallet.pk, wallet.name, wallet.money) for wallet in Wallet.objects.all()]
+        request_example = {"wallet_to_send": "", "money_to_send": "100.11"}
         return Response((usernames, request_example))
 
 
 class WalletCredit(APIView):
 
-    def post(self, request, format=None):
+    def post(self, request, pk, format=None):
 
         data = request.data
-        wallet_name = data["wallet_name"]
-        replenishment_amount = data["replenishment_amount"]
+        money_raised = data["money_raised"]
 
-        if "-" in replenishment_amount:
-            raise ValidationError("ERROR: replenishment amount must be positive")
+        try:
+            credit_result = Wallet.objects \
+                .filter(pk=pk) \
+                .first() \
+                .credit(money_raised)
+        except AssertionError as e:
+            return Response(f"Error: {e}")
+        except Exception as _:
+            return Response("Error: Selected wallet does not exist!")
 
-        if Wallet.objects.filter(name=wallet_name).exists():
-            # client = Wallet.objects.filter(name=wallet_name)[0].client
-            credit = Wallet.objects.filter(name=wallet_name).credit(replenishment_amount)
-            return Response(credit)
+        return Response(credit_result)
 
-        raise ValidationError("ERROR: wallet with this name doesn't exist")
-
-    def get(self, request, format=None):
+    def get(self, request, pk, format=None):
         """
         Return a list of all wallets.
         """
-        walletnames = [(user.name, user.money) for user in Wallet.objects.all()]
-        request_example = {"wallet_name": "", "replenishment_amount": ""}
-        return Response((walletnames, request_example))
+        wallets_data = [(wallet.pk, wallet.name, wallet.money) for wallet in Wallet.objects.all()]
+        request_example = {"money_raised": ""}
+        return Response((wallets_data, request_example))
