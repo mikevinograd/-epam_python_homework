@@ -5,7 +5,7 @@ from polls.models import Wallet
 class WalletDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wallet
-        fields = ("name", )
+        fields = ("name",)
 
 
 class WalletSerializer(serializers.ModelSerializer):

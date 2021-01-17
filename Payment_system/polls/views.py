@@ -5,9 +5,6 @@ from polls.serializers import WalletDetailSerializer, WalletSerializer
 from rest_framework.response import Response
 
 
-# Create your views here.
-
-
 class WalletCreateView(generics.CreateAPIView):
     serializer_class = WalletDetailSerializer
 
@@ -20,7 +17,9 @@ class WalletView(generics.RetrieveAPIView):
 class WalletCredit(APIView):
 
     def post(self, request, pk, format=None):
-
+        """
+        Increase money in wallet by given amount
+        """
         data = request.data
         money_raised = data["money_raised"]
 
@@ -48,7 +47,9 @@ class WalletCredit(APIView):
 class WalletTransfer(APIView):
 
     def post(self, request, pk, format=None):
-
+        """
+        Transfer money from chosen wallet to wallet_to_send_name
+        """
         data = request.data
 
         wallet_to_send_name = data["wallet_to_send"]
