@@ -41,7 +41,7 @@ class Wallet(models.Model):
             raise AssertionError("Sender must not be receiver!")
 
         if not (money_to_send_decimal > 0):
-            raise AssertionError("Incorrect transfer value")
+            raise AssertionError("Incorrect transfer value!")
 
         with transaction.atomic():
             is_changed = Wallet.objects \
