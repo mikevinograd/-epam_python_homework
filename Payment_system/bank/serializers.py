@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from polls.models import Wallet
+from bank.models import Wallet
 
 
 class WalletDetailSerializer(serializers.ModelSerializer):

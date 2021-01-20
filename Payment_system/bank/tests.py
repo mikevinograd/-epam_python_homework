@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from polls.models import Wallet
+from bank.models import Wallet
 import decimal
 
 
@@ -74,7 +74,7 @@ class WalletCreateViewTest(TestCase):
         data = {
             "name": "new_wallet"
         }
-        response = self.client.post(reverse('bank:create'), data)
+        response = self.client.post(reverse('bank:create_wallet'), data)
 
         new_wallet = Wallet.objects.get(name="new_wallet")
 
@@ -86,7 +86,7 @@ class WalletViewTest(TestCase):
 
     def test_get_wallet(self):
         new_wallet = Wallet.objects.create(name="new_wallet")
-        response = self.client.get(reverse('bank:wallet', args=(new_wallet.id,)))
+        response = self.client.get(reverse('bank:get_wallet', args=(new_wallet.id,)))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['name'], 'new_wallet')
