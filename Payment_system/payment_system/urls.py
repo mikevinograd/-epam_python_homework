@@ -16,5 +16,5 @@ Including another URLconf
 from django.urls import include, path
 
 urlpatterns = [
-    path('api/v1/bank/', include('bank.urls', namespace="bank")),
+    path('api/v1/bank/', include('payment_system.bank.urls', namespace="bank")),
 ]
