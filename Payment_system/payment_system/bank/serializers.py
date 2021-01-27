@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from bank.models import Wallet
+from payment_system.bank.models import Wallet
 
 
 class WalletDetailSerializer(serializers.ModelSerializer):

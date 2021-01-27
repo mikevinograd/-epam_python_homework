@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from bank.models import Wallet
+from payment_system.bank.models import Wallet
 import decimal
 
 

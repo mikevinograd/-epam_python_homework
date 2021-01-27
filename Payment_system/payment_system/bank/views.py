@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.views import APIView
-from bank.models import Wallet
-from bank.serializers import WalletDetailSerializer, WalletSerializer
+from payment_system.bank.models import Wallet
+from payment_system.bank.serializers import WalletDetailSerializer, WalletSerializer
 from rest_framework.response import Response
 
 
